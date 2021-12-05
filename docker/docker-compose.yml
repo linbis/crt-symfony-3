@@ -23,6 +23,7 @@ services:
         TIMEZONE: ${PHP_TIMEZONE}
     environment:
       - APP_ENV
+      - APP_SECRET
       - DATABASE_URL
     ports:
       - ${PHP_PORT}:9001
