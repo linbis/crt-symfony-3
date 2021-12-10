@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Article;
 use EasyCorp\Bundle\EasyAdminBundle\{
     Config\Dashboard, Config\MenuItem, Controller\AbstractDashboardController
 };
@@ -28,5 +29,6 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Articles', 'fas fa-list', Article::class);
     }
 }
