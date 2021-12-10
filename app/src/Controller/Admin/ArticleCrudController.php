@@ -54,16 +54,16 @@ class ArticleCrudController extends AbstractCrudController
         yield TextField::new('title');
         yield TextareaField::new('content');
 
-        $createdAt = DateTimeField::new('publishTime')->setFormTypeOptions([
+        $publishTime = DateTimeField::new('publishTime')->setFormTypeOptions([
             'html5' => true,
             'years' => range(date('Y'), date('Y') + 5),
             'widget' => 'single_text',
         ]);
 
         if (Crud::PAGE_EDIT === $pageName) {
-            yield $createdAt->setFormTypeOption('disabled', true);
+            yield $publishTime->setFormTypeOption('disabled', true);
         } else {
-            yield $createdAt;
+            yield $publishTime;
         }
     }
 
