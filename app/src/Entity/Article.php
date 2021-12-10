@@ -158,7 +158,7 @@ class Article
      */
     public function __toString(): string
     {
-        return $this->getCreatedAt()->format(('Y-m-d H:i:s')) . ' ' .  $this->getTitle();
+        return '#' . $this->getId() . ' ' . $this->getTitle();
     }
 
     /**
