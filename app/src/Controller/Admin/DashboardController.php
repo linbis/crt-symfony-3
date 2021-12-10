@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Article;
+use App\Entity\{
+    Article, User, StaticPage
+};
 use EasyCorp\Bundle\EasyAdminBundle\{
     Config\Dashboard, Config\MenuItem, Controller\AbstractDashboardController
 };
@@ -30,5 +32,10 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Articles', 'fas fa-list', Article::class);
+        
+        if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::linkToCrud('Pages', 'fas fa-list', StaticPage::class);
+            yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
+        }
     }
 }
