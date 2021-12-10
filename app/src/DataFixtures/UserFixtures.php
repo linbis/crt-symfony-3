@@ -27,6 +27,7 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
+        // create admin
         $user = new User();
         $user->setName('admin');
         $user->setEmail('admin@mail.ru');
@@ -36,6 +37,18 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
 
         $manager->persist($user);
+
+        // create manager
+        $userManager = new User();
+        $userManager->setName('manager');
+        $userManager->setEmail('manager@mail.ru');
+        $userManager->setRoles(['ROLE_EDITOR']);
+
+        $password = $this->encoder->encodePassword($userManager, 'nimda');
+        $userManager->setPassword($password);
+
+        $manager->persist($userManager);
+
         $manager->flush();
     }
 }
