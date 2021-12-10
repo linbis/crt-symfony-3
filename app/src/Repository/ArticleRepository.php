@@ -15,7 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArticleRepository extends ServiceEntityRepository
 {
-    public const PAGINATOR_PER_PAGE = 2;
+    /** @var int PAGINATOR_PER_PAGE - кол-во постов на страницу */
+    public const PAGINATOR_PER_PAGE = 1;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -28,15 +29,13 @@ class ArticleRepository extends ServiceEntityRepository
             'created_at' => 'DESC', 'title' => 'ASC']);
     }
 
-    public function getArticlePaginator(int $offset): Paginator
+    public function getPaginator(int $offset): Paginator
     {
-        $query = $this->createQueryBuilder('a')
-            ->orderBy('a.created_at', 'DESC')
+        return new Paginator($this->createQueryBuilder('a')
+            ->orderBy('a.publishTime', 'DESC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery()
-        ;
-
-        return new Paginator($query);
+        );
     }
 }
