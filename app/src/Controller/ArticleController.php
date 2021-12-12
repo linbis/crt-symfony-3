@@ -7,6 +7,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -30,15 +31,24 @@ class ArticleController extends AbstractController
         $this->twig = $twig;
     }
 
-    #[Route('/article/{id}', name: 'article')]
-    public function show(Article $article): Response
+    #[Route('/article/{slug}', name: 'article')]
+    public function show(string $slug, ArticleRepository $articleRepository): Response
     {
+        $article = $articleRepository->findOneBy([
+            'slug' => $slug
+        ]);
+
+        if (null === $article) {
+            throw new NotFoundHttpException('Page not found');
+        }
+
         return new Response($this->twig->render('view/article/show.html.twig', [
             'article' => $article
         ]));
     }
 
     #[Route('/', name: 'articles')]
+    #[Route('/article')]
     public function index(Request $request, ArticleRepository $articleRepository): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));

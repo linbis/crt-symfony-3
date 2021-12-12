@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @ORM\Table(name="articles")
@@ -28,12 +29,18 @@ class Article
      * @ORM\Column(name="title", type="string", length=255)
      */
     private string $title;
-
+    /**
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private string $slug;
+    /**
+     * @ORM\Column(name="anons", type="text")
+     */
+    private string $anons;
     /**
      * @ORM\Column(name="content", type="text")
      */
     private string $content;
-
     /**
      * @ORM\Column(name="publish_time", type="datetime")
      */
@@ -87,6 +94,38 @@ class Article
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnons(): string
+    {
+        return $this->anons;
+    }
+
+    /**
+     * @param string $anons
+     */
+    public function setAnons(string $anons): void
+    {
+        $this->anons = $anons;
     }
 
     /**

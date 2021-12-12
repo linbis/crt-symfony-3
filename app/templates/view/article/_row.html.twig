@@ -1,0 +1,8 @@
+<div class="post-preview">
+    <a href="{{ path('article', {'slug': article.slug}) }}">
+        <h2 class="post-title">{{ article.title }}</h2>
+    </a>
+    <p class="post-meta"> Posted by {{ article.author }}
+        on {{ article.publishTime|date('d.m.Y H:i') }}
+    </p>
+</div><hr class="my-4" />
