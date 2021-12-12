@@ -47,17 +47,14 @@ class StaticController extends AbstractController
     }
 
     #[Route('/statics', name: 'statics')]
-    public function index(Request $request, ManagerRegistry $managerRegistry): Response
+    public function index(Request $request): Response
     {
-        $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $managerRegistry->getRepository(StaticPage::class)
-            ->getPaginator($offset);
+        $pages = $this->entityManager->getRepository(StaticPage::class)
+            ->findBy([], null, 5);
 
-        return new Response($this->twig->render('/view/article/index.html.twig', [
+        return new Response($this->twig->render('/view/static/index.html.twig', [
             'title' => 'Все статьи',
-            'articles' => $paginator,
-            'previous' => $offset - ArticleRepository::PAGINATOR_PER_PAGE,
-            'next' => min(count($paginator), $offset + ArticleRepository::PAGINATOR_PER_PAGE),
+            'articles' => $pages
         ]));
     }
 }
