@@ -17,3 +17,5 @@ docker exec -it php-fpm php bin/console doctrine:migration:migrate --no-interact
 ```
 cat ./docker/mysql/dump.sql | docker exec -i mysql-server /usr/bin/mysql -u user --password=password crt-symfony-3
 ```
+
+По-умолчанию сайт блог доступен на порту 8080.
