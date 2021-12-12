@@ -35,26 +35,24 @@ class StaticController extends AbstractController
     #[Route('/about', name: 'about')]
     public function about(): Response
     {
-        return new Response($this->twig->render('view/about/index.html.twig'));
-    }
+        $page = $this->entityManager
+            ->getRepository(StaticPage::class)->find(1);
 
-    #[Route('/static/{id}', name: 'static')]
-    public function show(StaticPage $staticPage): Response
-    {
-        return new Response($this->twig->render('view/static/show.html.twig', [
-            'page' => $staticPage
+        return new Response($this->twig->render('view/about/index.html.twig', [
+            'page' => $page
         ]));
     }
 
-    #[Route('/statics', name: 'statics')]
-    public function index(Request $request): Response
+    #[Route('/robots.txt')]
+    public function robots(): Response
     {
-        $pages = $this->entityManager->getRepository(StaticPage::class)
-            ->findBy([], null, 5);
+        $page = $this->entityManager
+            ->getRepository(StaticPage::class)->find(2);
 
-        return new Response($this->twig->render('/view/static/index.html.twig', [
-            'title' => 'Все статьи',
-            'articles' => $pages
-        ]));
+        return new Response($this->twig->render('view/static/empty.html.twig', [
+            'page' => $page
+        ]), Response::HTTP_OK, [
+            'Content-Type' => 'text/plain'
+        ]);
     }
 }
