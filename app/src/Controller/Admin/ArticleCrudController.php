@@ -7,9 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\{
     Crud, Filters
 };
-use EasyCorp\Bundle\EasyAdminBundle\Field\{
-    DateTimeField, TextareaField, TextField
-};
+use EasyCorp\Bundle\EasyAdminBundle\Field\{DateTimeField, SlugField, TextareaField, TextField};
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 
 class ArticleCrudController extends AbstractCrudController
@@ -50,8 +48,13 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function configureFields(string $pageName): iterable
     {
-        yield TextField::new('author');
         yield TextField::new('title');
+        yield SlugField::new('slug')
+            ->setTargetFieldName('title')
+            ->setFormattedValue(function ($value) {
+                return strtoupper($value);
+            });
+        yield TextareaField::new('anons');
         yield TextareaField::new('content');
 
         $publishTime = DateTimeField::new('publishTime')->setFormTypeOptions([
@@ -65,6 +68,8 @@ class ArticleCrudController extends AbstractCrudController
         } else {
             yield $publishTime;
         }
+
+        yield TextField::new('author');
     }
 
 }
