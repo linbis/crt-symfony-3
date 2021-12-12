@@ -54,9 +54,6 @@ RUN pecl update-channels && \
 RUN apk add gnu-libiconv --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
-RUN composer -V
-
 WORKDIR /var/www/app
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_MEMORY_LIMIT=-1
@@ -74,7 +71,12 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
     && printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
     && "date"
 
-COPY php.ini /usr/local/etc/php/conf.d/php.ini
-COPY php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY /app ./
+COPY /docker/php-fpm/php.ini /usr/local/etc/php/conf.d/php.ini
+COPY /docker/php-fpm/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY /docker/entrypoint.sh /var/www/app/entrypoint.sh
+
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+RUN composer -V && composer install
 
 USER ${PUID}:${PGID}

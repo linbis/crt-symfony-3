@@ -18,17 +18,17 @@ services:
   symfony:
     container_name: php-fpm
     build:
-      context: ./php-fpm
+      context: ../
+      dockerfile: ./docker/php-fpm/Dockerfile
       args:
         TIMEZONE: ${PHP_TIMEZONE}
+    #entrypoint: ["sh", "/var/www/app/entrypoint.sh"]
     environment:
       - APP_ENV
       - APP_SECRET
       - DATABASE_URL
     ports:
       - ${PHP_PORT}:9001
-    volumes:
-      - ../app/:/var/www/app/
     depends_on:
       - mysql
     networks:

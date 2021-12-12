@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for article in articles %}
+                    {{ include('view/article/_row.html.twig', {'article': article}) }}
+                {% endfor %}
+                <!-- Pager-->
+                <div class="d-flex justify-content-end mb-4">
+                    {% if previous >= 0 %}
+                        <a class="btn btn-primary text-uppercase" href="{{ path('articles', {  offset: previous }) }}">Previous</a>
+                    {% endif %}
+                    {% if next < articles|length %}
+                        <a class="btn btn-primary text-uppercase" href="{{ path('articles', {  offset: next }) }}">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
