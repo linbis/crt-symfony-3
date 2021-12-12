@@ -29,8 +29,6 @@ services:
       - DATABASE_URL
     ports:
       - ${PHP_PORT}:9001
-    volumes:
-      - ../app/:/var/www/app/
     depends_on:
       - mysql
     networks:
